@@ -4,6 +4,7 @@ const path = require('path');
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager= require("./lib/Manager");
+const htmlPageContent='';
 
 
 const generateHTML = (answers)=>
@@ -121,7 +122,8 @@ const internQuestions=[
 
 inquirer.prompt(role)
 .then(answers=>{
-    const htmlPageContent=generateHTML(answers);
+    // const htmlPageContent=generateHTML(answers);
+    htmlPageContent += answers.role;
     if(answers.role==='Manager'){
         inquirer.prompt(managerQuestions)
         .then(answers=>{
@@ -138,8 +140,8 @@ inquirer.prompt(role)
             const htmlPageContent=generateHTML(answers);
         })
     }
+})
 
-    fs.writeFile(`index.html`,htmlPageContent,err=>
+    .then(fs.writeFile(`index.html`,htmlPageContent,err=>
         err ? console.log(err):console.log('successfully created index.html')
-    );
-});
+    ));
