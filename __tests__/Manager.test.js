@@ -8,16 +8,14 @@ describe( 'Manager',()=>{
     });
     it('sets officeNumber based on constructor argument',()=>{
         const officeNumber = 1;
-        const manager = new Manager("",officeNumber);
+        const manager = new Manager("",0,"",officeNumber);
         expect(manager.officeNumber).toBe(officeNumber);
     });
    });
 
    describe('getRole',()=>{
-    it('returns the Manager when the getRole() method is called' ,()=>{
-     
-      const manager = new Manager("",0,"");
-
+    it('returns the Manager when the getRole() method is called' ,()=>{    
+      const manager = new Manager("",0,"",0);
       expect(manager.getRole()).toBe('Manager');
     });
    });
@@ -25,8 +23,7 @@ describe( 'Manager',()=>{
    describe('getOfficeNumber',()=>{
     it('returns the officeNumber when the getOfficeNumber() method is called' ,()=>{
       const officeNumber = 1;
-      const manager = new Manager(name);
-
+      const manager = new Manager("",0,"",officeNumber);
       expect(manager.getOfficeNumber()).toBe(officeNumber);
     });
    });
