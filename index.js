@@ -4,7 +4,7 @@ const path = require('path');
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager= require("./lib/Manager");
-const htmlPageContent='';
+let htmlPageContent='';
 
 
 const generateHTML = (answers)=>
@@ -21,7 +21,7 @@ const generateHTML = (answers)=>
        <h1>My Team</h1>
     </header>
     <body>
-        <section class="row justify-content-around mb-10">
+        <section class="cardGroup row justify-content-around mb-10">
             <div class="card col-6 col-sm-3 col-lg-3 mb-3">
                 <div class="card-header bg-primary text-light"> 
                      <h3>${answers.name}</h3>
@@ -32,7 +32,9 @@ const generateHTML = (answers)=>
                       <ul class="list-group">
                         <li>ID: ${answers.id}</li>
                         <li>Email: ${answers.email}</li>
-                        <li>GitHub: ${answers.github} </li>
+                        ${answers.github ? `<li>GitHub: ${answers.github} </li>` : ''}
+                        ${answers.school ? `<li>School: ${answers.school} </li>` : ''}
+                        ${answers.officeNumber ? `<li>Office Number: ${answers.officeNumber} </li>` : ''}
                       </ul>
                     </div>
                 </div>
@@ -44,6 +46,10 @@ const generateHTML = (answers)=>
 </body>
 </html>
 `
+
+var card= document.querySelector(".card");
+var cardGroup=document.querySelector(".cardGroup");
+
 const role =[
     {
         type:"list",
@@ -118,30 +124,61 @@ const internQuestions=[
         message:"What's your school?"
     },
 ]
+const addEmployee=[
+    {
+        type:"confirm",
+        name:"addEmployee",
+        message:"Do you want to add one more employee?"
+    },
+]
 
 
-inquirer.prompt(role)
-.then(answers=>{
+function employeeCard(role){
+  inquirer.prompt(role)
+  .then(answersOfRole=>{
     // const htmlPageContent=generateHTML(answers);
-    htmlPageContent += answers.role;
-    if(answers.role==='Manager'){
+    // htmlPageContent += answers.role;
+      const role= answersOfRole.role;
+      if(role==='Manager'){
         inquirer.prompt(managerQuestions)
         .then(answers=>{
-            const htmlPageContent=generateHTML(answers);
+             answers.role=role;
+             htmlPageContent=generateHTML(answers);
+             writeHTML(htmlPageContent);
         })         
-    }else if(answers.role==='Engineer'){
+      }else if(role==='Engineer'){
         inquirer.prompt(engineerQuestions)
         .then(answers=>{
-            const htmlPageContent=generateHTML(answers);
+             answers.role=role;
+             htmlPageContent=generateHTML(answers);
+             writeHTML(htmlPageContent);
         })
-    }else if(answers.role==='Intern'){
+     }else if(role==='Intern'){
         inquirer.prompt(internQuestions)
         .then(answers=>{
-            const htmlPageContent=generateHTML(answers);
+             answers.role=role;
+             htmlPageContent=generateHTML(answers);
+             writeHTML(htmlPageContent);
         })
-    }
-})
+      }
+  })
+}
 
-    .then(fs.writeFile(`index.html`,htmlPageContent,err=>
-        err ? console.log(err):console.log('successfully created index.html')
-    ));
+inquirer.prompt(addEmployee)
+  .then(answerofAddEmployee=>{
+    if(answerofAddEmployee==='y'){
+        const newCard= document.createElement(newCard);
+        newCard=card.innerHTML;
+        document.body.cardGroup.appendChild(newCard);
+        employeeCard();
+    }else{
+        console.log("")
+    }
+  })
+
+function writeHTML(htmlPageContent){
+    fs.writeFile(`index.html`,htmlPageContent,err=>
+    err ? console.log(err):console.log('successfully created index.html')
+    );
+   } 
+
