@@ -47,7 +47,7 @@ const generateHTML = (answers)=>
 </html>
 `
 
-var card= document.querySelector(".card");
+var card= ${.card};
 var cardGroup=document.querySelector(".cardGroup");
 
 const role =[
